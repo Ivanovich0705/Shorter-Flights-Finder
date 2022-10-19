@@ -1,0 +1,28 @@
+{
+    "nodes":[
+      {"name":"Myriel",           "weight": 0.9,      "group":2},
+        {"name":"Napoleon",         "weight": 0.30,      "group":1},
+        {"name":"Mlle.Baptistine",  "weight": 0.30,      "group":1},
+        {"name":"Mme.Magloire",     "weight": 0.30,      "group":1},
+        {"name":"CountessdeLo",     "weight": 0.30,      "group":1},
+        {"name":"Geborand",         "weight": 0.30,      "group":1},
+        {"name":"Champtercier",     "weight": 0.30,      "group":1},
+        {"name":"Cravatte",         "weight": 0.30,      "group":1},
+        {"name":"Count",            "weight": 0.90,      "group":1},
+        {"name":"OldMan",           "weight": 0.30,      "group":1}
+        
+    ],
+  "links":[
+      {"source":1,    "target":0,     "value":10},
+        {"source":2,    "target":0,     "value":10},
+        {"source":3,    "target":0,     "value":100},
+        {"source":4,    "target":0,     "value":10},
+        {"source":5,    "target":0,     "value":10},
+        {"source":6,    "target":0,     "value":100},
+        {"source":7,    "target":0,     "value":10},
+        {"source":8,    "target":0,     "value":10},
+        {"source":9,    "target":0,     "value":10}
+
+        
+    ]
+}
