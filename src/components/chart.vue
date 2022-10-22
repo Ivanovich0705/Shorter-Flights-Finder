@@ -92,8 +92,8 @@ export default {
                    
              var path = d3.geoPath().projection(projection)
              
-             var graphJson = d3.json("/graph.json")
-             var continentalUsJson=d3.json("/continental-us.json")
+             var graphJson = d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json")
+             var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
              var linkForce = d3.forceLink()
                  .distance(40)
              var simulation = d3.forceSimulation(graphJson.nodes)
@@ -106,12 +106,13 @@ export default {
                  .on('drag', dragged)
                 .on('end', dragEnded)
 
-                var files = ["/graph.json", "/continental-us.json"];
+        var files = ["https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json",
+            "https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"];
                 var promises = [];
 
                 files.forEach(function (url) {
-                    promises.push(d3.json("/graph.json"))
-                    promises.push(d3.json("/continental-us.json"));
+                    promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json"))
+                    promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
 
                 });
 
@@ -222,7 +223,7 @@ export default {
     },
     methods: {
         async fetchData() {
-            let data = await d3.json("/data.json");
+            let data = await d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json");
             this.loadData = data;
         }
     }
