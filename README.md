@@ -4,5 +4,5 @@ Draggable interactive force graphs in d3.js
 ## Usage
 
 ```sh
-python -m http.server 8888
+npm run dev
 ```
