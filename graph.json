@@ -8,6 +8,13 @@
         "lon": -71.005181
       },
       {
+        "name":"Argentina",
+        "city":"Buenos Aires",
+        "faa":"EZE",
+        "lat":-34.822222,
+        "lon":-58.535833
+      },
+      {
         "id": 1,
         "name": "Metropolitan Oakland Intl",
         "city": "Oakland",
