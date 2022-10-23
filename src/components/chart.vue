@@ -113,8 +113,8 @@ export default {
                 var promises = [];
 
                 files.forEach(function (url) {
-                    //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json"))
-                    promises.push(d3.json("/graph.json"))
+                    promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/graph.json"))
+                    //promises.push(d3.json("/graph.json"))
                     //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
                     promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))
                 });
