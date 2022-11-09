@@ -1,7 +1,8 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <span class="p-float-label">
+    <InputText id="username" type="text" />
+    <label for="username">Username</label>
+</span>
 </template>
 
 <style>
