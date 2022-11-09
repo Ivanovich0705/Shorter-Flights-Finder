@@ -6,6 +6,10 @@ export class UserApiService {
     return http.get("/countries");
   }
 
+  getAirportsByCountry(country) {
+    return http.get(`/airports/${country}`);
+  }
+
   getById(id) {
     return http.get(`/login/${id}`);
   }

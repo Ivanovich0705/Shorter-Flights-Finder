@@ -1,62 +1,128 @@
 <template>
-    <h1>Hi</h1>
-    <button id="toggle">Toggle Map</button>
+  <div class="inputs">
+    <Button id="toggle" class="google toogle-button p-0" aria-label="Google">
+      <i class="pi pi-unlock px-2"></i>
+      <span class="px-3">Toggle Map</span>
+    </Button>
 
-    <div class="grid mt-6">
-        <div class="col-6 flex ">
-          <i class="order-origin ml-6 "></i>
-          <label class="text-2xl ml-6">Where will your order be placed? </label>
+    <div class="grid">
+      <div class="col-4">
+      <div class="grid mt-2">
+        <div class="col-8 flex">
+          <i class="order-origin ml-1 "></i>
+          <label class="text-xl ml-6"> Origin Country </label>
         </div>
-        <div class="col-6 flex justify-content-start">
-          <pv-dropdown class="drop-down" v-model="orderOrigin" :options="countries" optionLabel="name" v-on:change="validateOrigin()" placeholder="Select a City">
-              <template #value="slotProps">
-            <div class="country-item" v-if="slotProps.value">
-                  <img :src="'https://countryflagsapi.com/png/' + slotProps.value.code"/>
-                <span>{{ slotProps.value.name }}</span>
-              </div>
-              <span v-else>
-                {{ slotProps.placeholder }}
-              </span>
+        <div class="col-4 flex justify-content-start">
+
+          <pv-dropdown v-model="orderOrigin" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+            <template #value="slotProps">
+                <div class="country-item country-item-value" v-if="slotProps.value">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                    <span>{{slotProps.value.country}}</span>
+                </div>
+                <span v-else>
+                    {{slotProps.placeholder}}
+                </span>
             </template>
-    
             <template #option="slotProps">
                 <div class="country-item">
                   <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                <span>{{ slotProps.option.country }}</span>
-              </div>
+                    <span>{{slotProps.option.country}}</span>
+                </div>
             </template>
-          </pv-dropdown>
-          <div class="input-div">
-           <Message v-if=orderOriginError v-on:close="orderOriginError=false" severity="error">Origin is<strong> empty</strong> </Message></div>
+        </pv-dropdown>
         </div>
       </div>
-    
+
       <div class="grid mt-3">
-        <div class="col-6 flex">
-          <i class="order-destination ml-8"></i>
-          <label class="text-2xl ml-5 ">Where will the order be brought from?</label>
+        <div class="col-8 flex">
+          <i class="order-destination ml-1"></i>
+          <label class="text-xl ml-6">Destination Country </label>
         </div>
-        <div class="col-6 flex justify-content-start">
-          <pv-dropdown class="drop-down" v-model="orderDestination" :options="countries" optionLabel="name" v-on:change="validateDestination()" placeholder="Select a City">
+        <div class="col-4 flex justify-content-start">
+
+          <pv-dropdown v-model="orderDestination" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
             <template #value="slotProps">
-              <div class="country-item" v-if="slotProps.value">
-                <img :src="'https://countryflagsapi.com/png/' + slotProps.value.code"/>
-                <span>{{ slotProps.value.country }}</span>
-              </div>
-              <span v-else>
-                {{ slotProps.placeholder }}
-              </span>
+                <div class="country-item country-item-value" v-if="slotProps.value">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                    <span>{{slotProps.value.country}}</span>
+                </div>
+                <span v-else>
+                    {{slotProps.placeholder}}
+                </span>
             </template>
-    
             <template #option="slotProps">
-              <div class="country-item">
-                <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                <span>{{ slotProps.option.name }}</span>
-              </div>
+                <div class="country-item">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                    <span>{{slotProps.option.country}}</span>
+                </div>
             </template>
-          </pv-dropdown>
+        </pv-dropdown>
         </div>
       </div>
+    </div>
+
+    <div class="col-4">
+      <div class="grid mt-2">
+        <div class="col-8 flex ">
+          <i class="order-origin ml-1 "></i>
+          <label class="text-xl ml-3">Origin Airport </label>
+        </div>
+        <div class="col-4 flex justify-content-start">
+
+          <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+            <template #value="slotProps">
+                <div class="country-item country-item-value" v-if="slotProps.value">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                    <span>{{slotProps.value.airport}}</span>
+                </div>
+                <span v-else>
+                    {{slotProps.placeholder}}
+                </span>
+            </template>
+            <template #option="slotProps">
+                <div class="country-item">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                    <span>{{slotProps.option.airport}}</span>
+                </div>
+            </template>
+        </pv-dropdown>
+        </div>
+      </div>
+
+      <div class="grid mt-3">
+        <div class="col-8 flex ">
+          <i class="order-destination ml-1"></i>
+          <label class="text-xl ml-6">Destination Airport </label>
+        </div>
+        <div class="col-4 flex justify-content-start">
+
+          <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select a Country" :showClear="true">
+            <template #value="slotProps">
+                <div class="country-item country-item-value" v-if="slotProps.value">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                    <span>{{slotProps.value.airport}}</span>
+                </div>
+                <span v-else>
+                    {{slotProps.placeholder}}
+                </span>
+            </template>
+            <template #option="slotProps">
+                <div class="country-item">
+                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                    <span>{{slotProps.option.airport}}</span>
+                </div>
+            </template>
+        </pv-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Button label="Search Flights" />
+
+    </div>
+
+          
 
     
     <div id="dataviz-container"></div>
@@ -69,14 +135,19 @@ import { isGloballyWhitelisted, stringifyStyle } from '@vue/shared';
 import * as d3 from 'd3'
 export default {
     data() {
-        return {
+    return {
+          loading: [false, false, false],
             loadData: {},
             h: 600,
             w: 960,
 
         orderOrigin: "",
-        orderDestination: "",
-        countries: [],
+      orderDestination: "",
+        originAirportSelected: "",
+        destinationAirportSelected: "",
+      countries: [],
+      originAirports: [],
+      destinationAirports: [],
         }
   },
   created() {
@@ -86,10 +157,11 @@ export default {
       console.log("HEREE")
       this.countries = response.data;
       console.log(this.recent_orders)
-      console.log("HEREE NOT ANYMORE")
+        console.log("HEREE NOT ANYMORE")
+      });
 
-    }   );
-    },
+      
+  },
   mounted() {
         
 
@@ -107,7 +179,8 @@ export default {
                    
              var path = d3.geoPath().projection(projection)
              
-             var graphJson = d3.json('http://127.0.0.1:5000/nodes')
+             var graphJson = d3.json('')
+             //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
              var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
              var linkForce = d3.forceLink()
                  .distance(1)
@@ -126,7 +199,8 @@ export default {
                 var promises = [];
 
                 files.forEach(function (url) {
-                    promises.push(d3.json('http://127.0.0.1:5000/nodes'))
+                    promises.push(d3.json(''))
+                    //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
                     //promises.push(d3.json("/graph.json"))
                     //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
                     promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))
@@ -290,6 +364,7 @@ export default {
           this.orderOriginError = true
         } else {
           this.orderOriginError = false
+          this.loadOriginAirports()
         }
       },
       validateDestination () {
@@ -297,7 +372,27 @@ export default {
           this.orderDestinationError = true
         } else {
           this.orderDestinationError = false
+          this.loadDestinationAirports()
         }
+      },
+      load(index) {
+            this.loading[index] = true;
+            setTimeout(() => this.loading[index] = false, 1000);
+      },
+
+      loadOriginAirports() {
+        this.countryApiService.getAirportsByCountry(this.orderOrigin.country)
+          .then(response => {
+            this.originAirports = response.data
+          })
+        console.log(this.originAirports)
+        console.log(this.orderOrigin)
+      },
+      loadDestinationAirports() {
+        this.countryApiService.getAirportsByCountry(this.orderDestination.country)
+          .then(response => {
+            this.destinationAirports = response.data
+          })
       }
     }
 }
@@ -305,11 +400,7 @@ export default {
 </script>
 
 <style>
-#toggle {
-    position: absolute;
-    right: 15px; top: 15px;
-    z-index: 100;
-}
+.inputs
 
 .map path {
     fill: #eee;
@@ -317,7 +408,11 @@ export default {
     stroke-width: 2;
 }
 
+.inputs{
+  background-color: #55939e; 
+  background-repeat: repeat;
 
+}
 
 .flex {
     align-items: center;
@@ -357,9 +452,9 @@ export default {
   }
   
   }
-  
-  
-  
+  .inline{
+    display: inline-block;
+  }
   
   .order-box {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='50' height='35' fill='none' viewBox='0 0 50 35'%3e%3cpath fill='%23264986' d='M33.259 17.502a3.787 3.787 0 0 1-3.234-1.828l-5.023-8.328-5.016 8.328a3.8 3.8 0 0 1-3.242 1.836c-.351 0-.703-.047-1.039-.148L5.003 14.299v13.906c0 1.149.781 2.149 1.89 2.422l16.89 4.226a5.078 5.078 0 0 0 2.422 0l16.905-4.226A2.505 2.505 0 0 0 45 28.205V14.3l-10.702 3.055a3.595 3.595 0 0 1-1.039.148Zm16.608-8.765L45.844.706A1.276 1.276 0 0 0 44.54.011L25.002 2.503l7.163 11.882c.297.492.89.727 1.446.57l15.46-4.413a1.287 1.287 0 0 0 .796-1.805ZM4.16.706.136 8.737c-.36.719.024 1.578.79 1.797l15.46 4.414a1.284 1.284 0 0 0 1.444-.57l7.172-11.875L5.456.01A1.277 1.277 0 0 0 4.16.706Z'/%3e%3c/svg%3e");
@@ -372,7 +467,26 @@ export default {
   }
   
   }
-  
-
+  .p-button i, span{
+    color: white;
+  }
+  .p-button.google {
+    background: linear-gradient(to left, #213d50 50%, #213d50 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.5s ease-out;
+    color: #000;
+    border-color: #213d50;
+}
+.p-button.google:hover {
+    background-position: left bottom;
+}
+.p-button.google i {
+    background-color: #213d50;
+}
+.p-button.amazgoogleon:focus {
+    box-shadow: 0 0 0 1px #213d50;
+}
 
 </style>
+

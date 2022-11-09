@@ -9,8 +9,10 @@ import 'primevue/resources/primevue.min.css';
 import chart from './components/chart.vue'
 import HomeView from './views/HomeView.vue'
 import "primeflex/primeflex.css";
-import './assets/_theme.scss';
+import 'primeicons/primeicons.css';
 
+import "primevue/resources/themes/bootstrap4-dark-blue/theme.css";
+import "primevue/resources/primevue.min.css";
 
 // Add Components
 import Card from "primevue/card";
@@ -40,7 +42,7 @@ import TabPanel from 'primevue/tabpanel';
 
 
 
-//import './assets/main.css'
+import './assets/main.css'
 const app = createApp(App)
 
 app.use(router)
