@@ -349,7 +349,7 @@ export default {
   }
   
   }
-  .p-button i, span{
+  .p-button i, .p-button span{
     color: white;
   }
 
@@ -363,6 +363,7 @@ export default {
     margin:10px;
     padding:10px;
     padding-bottom: 0;
+    margin-bottom: 0;
 
   }
   div.p-card-content{
