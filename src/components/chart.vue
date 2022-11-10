@@ -1,131 +1,8 @@
 <template>
-  <div class="inputs">
-    <Button id="toggle" class="google toogle-button p-0" aria-label="Google">
-      <i class="pi pi-unlock px-2"></i>
-      <span class="px-3">Toggle Map</span>
-    </Button>
-
-    <div class="grid">
-      <div class="col-4">
-      <div class="grid mt-2">
-        <div class="col-8 flex">
-          <i class="order-origin ml-1 "></i>
-          <label class="text-xl ml-6"> Origin Country </label>
-        </div>
-        <div class="col-4 flex justify-content-start">
-
-          <pv-dropdown v-model="orderOrigin" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
-            <template #value="slotProps">
-                <div class="country-item country-item-value" v-if="slotProps.value">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                    <span>{{slotProps.value.country}}</span>
-                </div>
-                <span v-else>
-                    {{slotProps.placeholder}}
-                </span>
-            </template>
-            <template #option="slotProps">
-                <div class="country-item">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                    <span>{{slotProps.option.country}}</span>
-                </div>
-            </template>
-        </pv-dropdown>
-        </div>
-      </div>
-
-      <div class="grid mt-3">
-        <div class="col-8 flex">
-          <i class="order-destination ml-1"></i>
-          <label class="text-xl ml-6">Destination Country </label>
-        </div>
-        <div class="col-4 flex justify-content-start">
-
-          <pv-dropdown v-model="orderDestination" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
-            <template #value="slotProps">
-                <div class="country-item country-item-value" v-if="slotProps.value">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                    <span>{{slotProps.value.country}}</span>
-                </div>
-                <span v-else>
-                    {{slotProps.placeholder}}
-                </span>
-            </template>
-            <template #option="slotProps">
-                <div class="country-item">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                    <span>{{slotProps.option.country}}</span>
-                </div>
-            </template>
-        </pv-dropdown>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-4">
-      <div class="grid mt-2">
-        <div class="col-8 flex ">
-          <i class="order-origin ml-1 "></i>
-          <label class="text-xl ml-3">Origin Airport </label>
-        </div>
-        <div class="col-4 flex justify-content-start">
-
-          <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
-            <template #value="slotProps">
-                <div class="country-item country-item-value" v-if="slotProps.value">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                    <span>{{slotProps.value.airport}}</span>
-                </div>
-                <span v-else>
-                    {{slotProps.placeholder}}
-                </span>
-            </template>
-            <template #option="slotProps">
-                <div class="country-item">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                    <span>{{slotProps.option.airport}}</span>
-                </div>
-            </template>
-        </pv-dropdown>
-        </div>
-      </div>
-
-      <div class="grid mt-3">
-        <div class="col-8 flex ">
-          <i class="order-destination ml-1"></i>
-          <label class="text-xl ml-6">Destination Airport </label>
-        </div>
-        <div class="col-4 flex justify-content-start">
-
-          <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select a Country" :showClear="true">
-            <template #value="slotProps">
-                <div class="country-item country-item-value" v-if="slotProps.value">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                    <span>{{slotProps.value.airport}}</span>
-                </div>
-                <span v-else>
-                    {{slotProps.placeholder}}
-                </span>
-            </template>
-            <template #option="slotProps">
-                <div class="country-item">
-                  <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                    <span>{{slotProps.option.airport}}</span>
-                </div>
-            </template>
-        </pv-dropdown>
-        </div>
-      </div>
-    </div>
-  </div>
-  <Button label="Search Flights" />
-
-    </div>
-
+  
           
 
     
-    <div id="dataviz-container"></div>
 
 </template>
 
@@ -168,19 +45,19 @@ export default {
         console.log("Chart Loaded");
         
              var positioning = 'map'
-             var width = 1800
+             var width = 1600
              var height = 800
             
 
               var projection = d3.geoMercator()
-                  .scale(250)
+                  .scale(210)
                   .center([0,20])
-                 .translate([width / 2, height / 2])
+                  .translate([width / 2, height / 2])
                    
              var path = d3.geoPath().projection(projection)
              
-             var graphJson = d3.json('')
-             //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
+             //var graphJson = d3.json('')
+             var graphJson = d3.json('http://127.0.0.1:5000/nodes')
              var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
              var linkForce = d3.forceLink()
                  .distance(1)
@@ -199,8 +76,8 @@ export default {
                 var promises = [];
 
                 files.forEach(function (url) {
-                    promises.push(d3.json(''))
-                    //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
+                    //promises.push(d3.json(''))
+                    promises.push(d3.json('http://127.0.0.1:5000/nodes'))
                     //promises.push(d3.json("/graph.json"))
                     //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
                     promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))
@@ -226,10 +103,15 @@ export default {
                  
                  
                  simulation.force('link').links(graph.links)
-                 var svg = d3.select('body')
-                     .append('svg')
-                     .attr('width', width)
-                     .attr('height', height)
+               var svg = d3.select('body')
+                 .append('svg')
+                 .attr('width', width)
+                 .attr('height', height)
+                 .style("fill", "#DDDDDD")
+                 .style("border", "1px solid white")
+                 .style("display", "block")
+                 .style("margin", "auto");
+
                      
                  var map = svg.append('g')
                      .attr('class', 'map')
@@ -399,8 +281,8 @@ export default {
 
 </script>
 
-<style>
-.inputs
+<style scoped>
+
 
 .map path {
     fill: #eee;
@@ -487,6 +369,8 @@ export default {
 .p-button.amazgoogleon:focus {
     box-shadow: 0 0 0 1px #213d50;
 }
+
+
 
 </style>
 
