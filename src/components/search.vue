@@ -150,7 +150,7 @@
                                         <label class="text-xl ml-1">Origin Country</label>
                                     </div>
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="kruskalStartCountry" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+                                        <pv-dropdown v-model="kruskalStartCountry" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadKruskalAirports()" :showClear="true">
                                             <template #value="slotProps">
 
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
@@ -179,7 +179,7 @@
                                         <label class="text-xl ml-0">Origin Airport </label>
                                     </div>
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
+                                        <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select a Country" :showClear="true">
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
