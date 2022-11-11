@@ -183,7 +183,7 @@
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.country}}</span>
+                                                    <span>{{slotProps.value.airport}}</span>
                                                 </div>
                                                 <span v-else>
                                                     {{slotProps.placeholder}}
@@ -193,7 +193,7 @@
                                             <template #option="slotProps">
                                                 <div class="country-item">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.country}}</span>
+                                                    <span>{{slotProps.option.airport}}</span>
                                                 </div>
                                             </template>
                                         </pv-dropdown>
@@ -280,9 +280,10 @@ export default {
             });
         },
         loadKruskalAirports() {
-            this.countryApiService.getAirportsByCountry(this.kruskalAirports.country)
+            this.countryApiService.getAirportsByCountry(this.kruskalStartCountry.country)
                 .then(response => {
                 this.kruskalAirports = response.data;
+                console.log("🚀 ~ file: search.vue ~ line 286 ~ loadKruskalAirports ~ this.kruskalAirports = response.data;", this.kruskalAirports = response.data)
             });
         }
     },
