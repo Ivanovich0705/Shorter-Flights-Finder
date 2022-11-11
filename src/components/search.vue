@@ -293,7 +293,6 @@ export default {
 .card{ 
     border-radius: 20px;
     box-shadow: 0 6px 30px rgba(0, 0, 0, 0.356), 0 0 6px rgba(0, 0, 0, 0.05);
-
 }
 
 .flex {

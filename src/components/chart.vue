@@ -56,13 +56,14 @@ export default {
                    
              var path = d3.geoPath().projection(projection)
              
-             var graphJson = d3.json('http://127.0.0.1:5000/dijkstra/1146/1147')
+             var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
              //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
              var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
              var linkForce = d3.forceLink()
                  .distance(1)
              var simulation = d3.forceSimulation(graphJson.nodes)
-                 .force("link", d3.forceLink(graphJson.links))
+                 .force("link", d3.forceLink().id(function(d) { return d.id; }))
+                 //.force("link", d3.forceLink(graphJson.links))
                  .force('charge', d3.forceManyBody().strength(-20))
                  .force('center', d3.forceCenter(width / 2, height / 2))
                  .stop()
@@ -76,7 +77,7 @@ export default {
                 var promises = [];
 
                 files.forEach(function (url) {
-                    promises.push(d3.json('http://127.0.0.1:5000/dijkstra/1146/1147'))
+                    promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
                     //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
                     //promises.push(d3.json("/graph.json"))
                     //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
@@ -93,94 +94,97 @@ export default {
                 //  .defer(d3.json, 'continental-us.json')
                 //  .awaitAll(initialize)
 
-             function initialize(results) {
+            function initialize(results) {
                  
-                 var graph = results[0]
-                 var features = results[1].features
-                 console.log(graph)
-                 simulation.nodes(graph.nodes)
+              var graph = results[0]
+              var features = results[1].features
+              console.log(graph)
+              simulation.nodes(graph.nodes)
 
+              
                  
-                 
-                 simulation.force('link').links(graph.links)
-               var svg = d3.select('body')
-                 .append('svg')
-                 .attr('width', width)
-                 .attr('height', height)
-                 .style("fill", "#DDDDDD")
-                 .style("border", "1px solid white")
-                 .style("display", "block")
-                 .style("margin", "auto");
+              simulation.force('link').links(graph.links)
+              var svg = d3.select('body')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .style("fill", "#DDDDDD")
+                .style("border", "1px solid white")
+                .style("border-radius", "10px")
+                .style("box-shadow", "0 6px 30px rgba(0, 0, 0, 0.356), 0 0 6px rgba(0, 0, 0, 0.05)")
+                .style("display", "block")
+                .style("margin", "auto");
 
                      
-                 var map = svg.append('g')
-                     .attr('class', 'map')
-                     .selectAll('path')
-                     .data(features)
-                     .enter().append('path')
-                     .attr('d', path)
-                 var links = svg.append('g')
-                     .attr('class', 'links')
-                     .selectAll('line')
-                     .data(graph.links)
-                     .enter().append('line')
-                     .attr('stroke-width', 1)
-                     .attr("stroke", "grey")//Line Color
-                     .attr("opacity", "0.25")//Line Color
-                 var nodes = svg.append('g')
-                     .attr('class', 'nodes')
-                     .selectAll('circle')
-                     .data(graph.nodes)
-                     .enter().append('circle')
-                     .attr("stroke", function (d) {
-                        // 3 1 2 4
-                        if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
-                             return "#476930";//Latin America
-                        }
-                        if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
-                             return "#0583d2";//North America
-                         }
-                        if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
-                             return "#FFFCEB";//Europe
-                        }
-                        if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
-                             return "#D0C7C2";//Africa
-                        }
-                        if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
-                             return "#2D7D7E";//Oceania
-                        }
-                        return "#AD2E45";//Asia
+              var map = svg.append('g')
+                  .attr('class', 'map')
+                  .selectAll('path')
+                  .data(features)
+                  .enter().append('path')
+                .attr('d', path)
+                  
+              var links = svg.append('g')
+                  .attr('class', 'links')
+                  .selectAll('line')
+                  .data(graph.links)
+                  .enter().append('line')
+                  .attr('stroke-width', 1)
+                  .attr("stroke", "grey")//Line Color
+                .attr("opacity", "0.25")//Line Color
+                  
+              var nodes = svg.append('g')
+                  .attr('class', 'nodes')
+                  .selectAll('circle')
+                  .data(graph.nodes)
+                  .enter().append('circle')
+                  .attr("stroke", function (d) {
+                    // 3 1 2 4
+                    if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
+                          return "#476930";//Latin America
+                    }
+                    if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
+                          return "#0583d2";//North America
+                      }
+                    if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
+                          return "#FFFCEB";//Europe
+                    }
+                    if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
+                          return "#D0C7C2";//Africa
+                    }
+                    if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
+                          return "#2D7D7E";//Oceania
+                    }
+                    return "#AD2E45";//Asia
 
-                     })//Cirlce Border Color
-                     .attr("fill", function (d) {
-                        // 3 1 2 4
-                        if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
-                             return "#86B049";//Latin America
-                        }
-                        if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
-                             return "#16558f";//North America
-                         }
-                        if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
-                             return "#F9CF33";//Europe
-                        }
-                        if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
-                             return "#896B60";//Africa
-                        }
-                        if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
-                             return "#7ECCCC";//Oceania
-                        }
-                        return "#EFE5E3";//Asia
+                  })//Cirlce Border Color
+                  .attr("fill", function (d) {
+                    // 3 1 2 4
+                    if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
+                          return "#86B049";//Latin America
+                    }
+                    if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
+                          return "#16558f";//North America
+                      }
+                    if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
+                          return "#F9CF33";//Europe
+                    }
+                    if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
+                          return "#896B60";//Africa
+                    }
+                    if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
+                          return "#7ECCCC";//Oceania
+                    }
+                    return "#EFE5E3";//Asia
 
-                     })//Circle Fill Color235
-                     .attr("stroke-width", "2")
-                     .attr("opacity", "0.9")//Line Color
+                  })//Circle Fill Color235
+                  .attr("stroke-width", "2")
+                  .attr("opacity", "0.9")//Line Color
+                  .attr('r', 5)
+                  .call(drag)
 
-                     .attr('r', 5)
-                     .call(drag)
-
-                 nodes.append('title')
-                     .text(function (d) { return d.faa })
-                 fixed(true)
+              nodes.append('title')
+                .text(function (d) { return d.faa })
+              fixed(true)
                  d3.select('#toggle').on('click', toggle)
                  function fixed(immediate) {
                      graph.nodes.forEach(function (d) {
@@ -196,7 +200,7 @@ export default {
                  function ticked() {
                      update(links, nodes)
                  }
-                 function update(links, nodes) {
+                function update(links, nodes) {
                      links
                          .attr('x1', function (d) { return d.source.x })
                          .attr('y1', function (d) { return d.source.y })
@@ -205,7 +209,7 @@ export default {
                      nodes
                          .attr('cx', function (d) { return d.x })
                          .attr('cy', function (d) { return d.y })
-                 }
+                }
                  function toggle() {
                      if (positioning === 'map') {
                          positioning = 'sim'
@@ -218,7 +222,7 @@ export default {
                          fixed()
                      }
                  }
-             }
+            }
              function dragStarted(d) {
                 simulation.alphaTarget(0.3).restart()
                  d.fx = d.x
@@ -257,10 +261,7 @@ export default {
           this.loadDestinationAirports()
         }
       },
-      load(index) {
-            this.loading[index] = true;
-            setTimeout(() => this.loading[index] = false, 1000);
-      },
+    
 
       loadOriginAirports() {
         this.countryApiService.getAirportsByCountry(this.orderOrigin.country)
