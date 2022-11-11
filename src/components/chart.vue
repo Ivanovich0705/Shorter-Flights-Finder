@@ -56,8 +56,9 @@ export default {
                    
              var path = d3.geoPath().projection(projection)
              
-             var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
-             //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
+             //var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
+             //var graphJson = d3.json('http://127.0.0.1:5000')
+             var graphJson = d3.json('http://127.0.0.1:5000/nodes')
              var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
              var linkForce = d3.forceLink()
                  .distance(1)
@@ -77,8 +78,8 @@ export default {
                 var promises = [];
 
                 files.forEach(function (url) {
-                    promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
-                    //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
+                    //promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
+                    promises.push(d3.json('http://127.0.0.1:5000/nodes'))
                     //promises.push(d3.json("/graph.json"))
                     //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
                     promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))

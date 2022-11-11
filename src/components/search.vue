@@ -86,7 +86,7 @@
                                     </div>
 
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+                                        <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" v-on:change="validateOrigin()" :showClear="true">
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -113,7 +113,7 @@
                                     </div>
 
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select a Country" :showClear="true">
+                                        <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -134,6 +134,10 @@
                                 </div>
                             </div>
                         </div>
+                    </template>
+
+                    <template #footer>
+                        <Button type="button" label="Search by Dijkstra" icon="pi pi-search" :loading="loadingDijkstra[0]" @click="loadDijkstra(0)" />
                     </template>
                 </Card>
 
@@ -179,7 +183,7 @@
                                         <label class="text-xl ml-0">Origin Airport </label>
                                     </div>
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select a Country" :showClear="true">
+                                        <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -202,6 +206,9 @@
                             </div>
                         </div>
                     </template>
+                    <template #footer>
+                        <Button type="button" label="Search by Kruskal" icon="pi pi-search" :loading="loadingKruskal[0]" @click="loadKruskal(0)" />
+                    </template>
                 </Card>
             </div>
         </template>
@@ -218,7 +225,8 @@ import { isTemplateNode } from "@vue/compiler-core";
 export default {
     data() {
         return {
-            loading: [false, false, false],
+            loadingKruskal: [false, false, false],
+            loadingDijkstra: [false, false, false],
             loadData: {},
             h: 600,
             w: 960,
@@ -243,6 +251,14 @@ export default {
         });
     },
     methods: {
+        loadDijkstra(index) {
+            this.loadingDijkstra[index] = true;
+            setTimeout(() => this.loadingDijkstra[index] = false, 1000);
+        },
+        loadKruskal(index) {
+            this.loadingKruskal[index] = true;
+            setTimeout(() => this.loadingKruskal[index] = false, 1000);
+        },
         validateOrigin: function () {
             if (this.orderOrigin == "") {
                 this.orderOriginError = true;
