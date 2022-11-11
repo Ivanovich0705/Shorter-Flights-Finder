@@ -150,7 +150,7 @@
                                         <label class="text-xl ml-1">Origin Country</label>
                                     </div>
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="orderOrigin" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+                                        <pv-dropdown v-model="kruskalStartCountry" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
                                             <template #value="slotProps">
 
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
@@ -179,7 +179,7 @@
                                         <label class="text-xl ml-0">Origin Airport </label>
                                     </div>
                                     <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="orderDestination" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
+                                        <pv-dropdown v-model="kruskalStartAirport" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
                                             <template #value="slotProps">
                                                 <div class="country-item country-item-value" v-if="slotProps.value">
                                                     <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -224,11 +224,14 @@ export default {
             w: 960,
             orderOrigin: "",
             orderDestination: "",
+            kruskalStartCountry: "",
+            kruskalStartAirport: "",
             originAirportSelected: "",
             destinationAirportSelected: "",
             countries: [],
             originAirports: [],
             destinationAirports: [],
+            kruskalAirports: [],
         };
     },
     created() {
@@ -274,6 +277,12 @@ export default {
             this.countryApiService.getAirportsByCountry(this.orderDestination.country)
                 .then(response => {
                 this.destinationAirports = response.data;
+            });
+        },
+        loadKruskalAirports() {
+            this.countryApiService.getAirportsByCountry(this.kruskalAirports.country)
+                .then(response => {
+                this.kruskalAirports = response.data;
             });
         }
     },
