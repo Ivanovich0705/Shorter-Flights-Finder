@@ -1,2 +1,9 @@
-# Shorter-Flights-Finder
-Currently in develop, for files see "develop" branch
+# Shorter-Flights-Finder (d3.js)
+Draggable interactive force graphs in d3.js
+
+## Usage
+
+```sh
+npm run dev
+```
+
