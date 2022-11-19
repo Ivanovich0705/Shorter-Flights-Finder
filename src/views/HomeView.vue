@@ -5,12 +5,7 @@ import searchVue from '../components/search.vue';
 </script>
 
 <template>
-<header>
+
    <searchVue/>
 
-</header>
-  <main>
-
-    <chart />
-  </main>
 </template>
