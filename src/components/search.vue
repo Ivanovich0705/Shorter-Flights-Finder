@@ -280,7 +280,6 @@ export default {
             this.loadingKruskal[index] = true;
             setTimeout(() => this.loadingKruskal[index] = false, 1000);
             this.$refs.chartComponent.d3init(this.kruskalStartAirport.airportId)
-
         },
         validateOrigin: function () {
             if (this.orderOrigin == "") {

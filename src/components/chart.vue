@@ -1,6 +1,4 @@
 <template>
-  
-          
 
     
 
@@ -43,7 +41,7 @@ export default {
   mounted() {
     
   
-    //this.d3init()
+    this.d3init()
         
     },
     methods: {
@@ -81,6 +79,7 @@ export default {
       },
 
       d3init(start = -1, end = -1) {
+        this.deleteSvgs()
         console.log(start)
         console.log(end)
         if (start == -1 && end == -1) {
@@ -150,7 +149,7 @@ export default {
            //  .awaitAll(initialize)
 
        function initialize(results) {
-            console.log("initializa")
+            console.log("initialize")
          var graph = results[0]
          var features = results[1].features
          console.log(graph)
@@ -295,6 +294,10 @@ export default {
         }
 
 
+      },
+
+      deleteSvgs() {
+        d3.selectAll("svg").remove();
       }
     }
 }
