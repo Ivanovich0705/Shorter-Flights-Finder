@@ -85,10 +85,10 @@ export default {
         if (start == -1 && end == -1) {
           this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/nodes'
         } else if (end == -1) {
-          this.nodesUrl = 'http://127.0.0.1:5000/prim/' + start
+          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/prim/' + start
           console.log("prim here")
         } else {
-          this.nodesUrl = 'http://127.0.0.1:5000/dijkstra/' + start + '/' + end
+          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/dijkstra/' + start + '/' + end
           //this.nodesUrl='https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'
         }
         console.log(this.nodesUrl)
