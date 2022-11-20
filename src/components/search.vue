@@ -144,7 +144,7 @@
 
                     <Card class="card col-4 ml-auto mr-auto">
                         <template #header>
-                            <h2>Kruskal for an Airport</h2>
+                            <h2>Prim for an Airport</h2>
                         </template>
                         <template #content>
                             <div class="grid">
@@ -184,7 +184,7 @@
                                             <label class="text-xl ml-0">Origin Airport </label>
                                         </div>
                                         <div class="col-4 flex justify-content-start">
-                                            <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
+                                            <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" :showClear="true">
                                                 <template #value="slotProps">
                                                     <div class="country-item country-item-value" v-if="slotProps.value">
                                                         <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -279,6 +279,8 @@ export default {
         loadKruskal(index) {
             this.loadingKruskal[index] = true;
             setTimeout(() => this.loadingKruskal[index] = false, 1000);
+            this.$refs.chartComponent.d3init(this.kruskalStartAirport.airportId)
+
         },
         validateOrigin: function () {
             if (this.orderOrigin == "") {
