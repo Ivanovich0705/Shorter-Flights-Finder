@@ -25,7 +25,8 @@ export default {
       countries: [],
       originAirports: [],
       destinationAirports: [],
-        }
+      nodesUrl:""
+    }
   },
   created() {
       this.countryApiService = new UserApiService()
@@ -79,9 +80,17 @@ export default {
           })
       },
 
-      d3init() {
+      d3init(start = -1, end = -1) {
+        console.log(start)
+        console.log(end)
+        if (start == -1 && end == -1) {
+          this.nodesUrl='https://acomplex-tf-api.herokuapp.com/nodes'
+        } else {
+          this.nodesUrl='http://127.0.0.1:5000/dijkstra/' + start + '/' + end
+          //this.nodesUrl='https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'
+        }
+        console.log(this.nodesUrl)
         
-
       console.log("Chart Loaded");
         
         var positioning = 'map'
@@ -97,10 +106,9 @@ export default {
         var path = d3.geoPath().projection(projection)
         
         //var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
-        var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/nodes')
+        var graphJson = d3.json(this.nodesUrl)
         //var graphJson = d3.json('http://127.0.0.1:5000')
         //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
-        var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
         var linkForce = d3.forceLink()
             .distance(1)
         var simulation = d3.forceSimulation(graphJson.nodes)
@@ -114,13 +122,14 @@ export default {
             .on('drag', dragged)
            .on('end', dragEnded)
 
-   var files = ["1",
+      var files = ["1",
        "2"];
            var promises = [];
 
            files.forEach(function (url) {
                //promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
-               promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/nodes'))
+               //promises.push(d3.json(this.nodesUrl))
+               promises.push(graphJson)
                //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
                //promises.push(d3.json("/graph.json"))
                //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
@@ -138,7 +147,7 @@ export default {
            //  .awaitAll(initialize)
 
        function initialize(results) {
-            
+            console.log("initializa")
          var graph = results[0]
          var features = results[1].features
          console.log(graph)

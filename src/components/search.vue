@@ -87,7 +87,7 @@
                                         </div>
 
                                         <div class="col-4 flex justify-content-start">
-                                            <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" v-on:change="validateOrigin()" :showClear="true">
+                                            <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" v-on:change="validateOrigin()" :showClear="true">
                                                 <template #value="slotProps">
                                                     <div class="country-item country-item-value" v-if="slotProps.value">
                                                         <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -114,7 +114,7 @@
                                         </div>
 
                                         <div class="col-4 flex justify-content-start">
-                                            <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
+                                            <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" :showClear="true">
                                                 <template #value="slotProps">
                                                     <div class="country-item country-item-value" v-if="slotProps.value">
                                                         <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
@@ -261,17 +261,20 @@ export default {
             console.log("🚀 ~ file: search.vue ~ line 152 ~ this.countryApiService.getCountries ~ this.countries = response.data;", this.countries = response.data);
         });
     },
+    mounted() {
+        //this.$refs.chartComponent.d3init()
+    },
     methods: {
         doDijkstra() {
-            console.log(this.originAirportSelected)
-            console.log(this.destinationAirportSelected)
+            console.log(this.originAirportSelected.airportId)
+            console.log(this.destinationAirportSelected.airportId)
             //call function from search component
         },
         loadDijkstra(index) {
             this.loadingDijkstra[index] = true;
             setTimeout(() => this.loadingDijkstra[index] = false, 1000);
             this.doDijkstra();
-            this.$refs.chartComponent.d3init()
+            this.$refs.chartComponent.d3init(this.originAirportSelected.airportId, this.destinationAirportSelected.airportId)
         },
         loadKruskal(index) {
             this.loadingKruskal[index] = true;
