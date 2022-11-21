@@ -1,6 +1,4 @@
 <template>
-  
-          
 
     
 
@@ -25,7 +23,8 @@ export default {
       countries: [],
       originAirports: [],
       destinationAirports: [],
-        }
+      nodesUrl:""
+    }
   },
   created() {
       this.countryApiService = new UserApiService()
@@ -40,209 +39,9 @@ export default {
       
   },
   mounted() {
-        
-
-        console.log("Chart Loaded");
-        
-             var positioning = 'map'
-             var width = 1600
-             var height = 800
-            
-
-              var projection = d3.geoMercator()
-                  .scale(210)
-                  .center([0,20])
-                  .translate([width / 2, height / 2])
-                   
-             var path = d3.geoPath().projection(projection)
-             
-             var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
-             //var graphJson = d3.json('http://127.0.0.1:5000')
-             //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
-             var continentalUsJson=d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json")
-             var linkForce = d3.forceLink()
-                 .distance(1)
-             var simulation = d3.forceSimulation(graphJson.nodes)
-                 .force("link", d3.forceLink().id(function(d) { return d.id; }))
-                 //.force("link", d3.forceLink(graphJson.links))
-                 .force('charge', d3.forceManyBody().strength(-20))
-                 .force('center', d3.forceCenter(width / 2, height / 2))
-                 .stop()
-             var drag = d3.drag()
-                 .on('start', dragStarted)
-                 .on('drag', dragged)
-                .on('end', dragEnded)
-
-        var files = ["1",
-            "2"];
-                var promises = [];
-
-                files.forEach(function (url) {
-                    promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
-                    //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
-                    //promises.push(d3.json("/graph.json"))
-                    //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
-                    promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))
-                });
-
-                Promise.all(promises).then(function(values) {
-                    console.log(values);
-                    initialize(values)
-                });
-
-                // d3.queue()
-                //  .defer(d3.json, 'graph.json')
-                //  .defer(d3.json, 'continental-us.json')
-                //  .awaitAll(initialize)
-
-            function initialize(results) {
-                 
-              var graph = results[0]
-              var features = results[1].features
-              console.log(graph)
-              simulation.nodes(graph.nodes)
-
-              
-                 
-              simulation.force('link').links(graph.links)
-              var svg = d3.select('body')
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height)
-                .style("fill", "#DDDDDD")
-                .style("border", "1px solid white")
-                .style("border-radius", "10px")
-                .style("box-shadow", "0 6px 30px rgba(0, 0, 0, 0.356), 0 0 6px rgba(0, 0, 0, 0.05)")
-                .style("display", "block")
-                .style("margin", "auto");
-
-                     
-              var map = svg.append('g')
-                  .attr('class', 'map')
-                  .selectAll('path')
-                  .data(features)
-                  .enter().append('path')
-                .attr('d', path)
-                  
-              var links = svg.append('g')
-                  .attr('class', 'links')
-                  .selectAll('line')
-                  .data(graph.links)
-                  .enter().append('line')
-                  .attr('stroke-width', 1)
-                  .attr("stroke", "grey")//Line Color
-                .attr("opacity", "0.25")//Line Color
-                  
-              var nodes = svg.append('g')
-                  .attr('class', 'nodes')
-                  .selectAll('circle')
-                  .data(graph.nodes)
-                  .enter().append('circle')
-                  .attr("stroke", function (d) {
-                    // 3 1 2 4
-                    if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
-                          return "#476930";//Latin America
-                    }
-                    if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
-                          return "#0583d2";//North America
-                      }
-                    if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
-                          return "#FFFCEB";//Europe
-                    }
-                    if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
-                          return "#D0C7C2";//Africa
-                    }
-                    if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
-                          return "#2D7D7E";//Oceania
-                    }
-                    return "#AD2E45";//Asia
-
-                  })//Cirlce Border Color
-                  .attr("fill", function (d) {
-                    // 3 1 2 4
-                    if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
-                          return "#86B049";//Latin America
-                    }
-                    if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
-                          return "#16558f";//North America
-                      }
-                    if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
-                          return "#F9CF33";//Europe
-                    }
-                    if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
-                          return "#896B60";//Africa
-                    }
-                    if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
-                          return "#7ECCCC";//Oceania
-                    }
-                    return "#EFE5E3";//Asia
-
-                  })//Circle Fill Color235
-                  .attr("stroke-width", "2")
-                  .attr("opacity", "0.9")//Line Color
-                  .attr('r', 5)
-                  .call(drag)
-
-              nodes.append('title')
-                .text(function (d) { return d.faa })
-              fixed(true)
-                 d3.select('#toggle').on('click', toggle)
-                 function fixed(immediate) {
-                     graph.nodes.forEach(function (d) {
-                         var pos = projection([d.lon, d.lat])
-                         d.x = pos[0]
-                         d.y = pos[1]
-                     })
-                     var t = d3.transition()
-                         .duration(immediate ? 0 : 600)
-                         .ease(d3.easeElastic.period(0.5))
-                     update(links.transition(t), nodes.transition(t))
-                 }
-                 function ticked() {
-                     update(links, nodes)
-                 }
-                function update(links, nodes) {
-                     links
-                         .attr('x1', function (d) { return d.source.x })
-                         .attr('y1', function (d) { return d.source.y })
-                         .attr('x2', function (d) { return d.target.x })
-                         .attr('y2', function (d) { return d.target.y })
-                     nodes
-                         .attr('cx', function (d) { return d.x })
-                         .attr('cy', function (d) { return d.y })
-                }
-                 function toggle() {
-                     if (positioning === 'map') {
-                         positioning = 'sim'
-                         map.attr('opacity', 0.25)
-                         simulation.on('tick', ticked).alpha(1).restart()
-                     } else {
-                         positioning = 'map'
-                         map.attr('opacity', 1)
-                         simulation.on('tick', null).stop()
-                         fixed()
-                     }
-                 }
-            }
-             function dragStarted(d) {
-                simulation.alphaTarget(0.3).restart()
-                 d.fx = d.x
-                 d.fy = d.y
-             }
-            function dragged(event, d) {
-                if (positioning === 'map') { return }
-                d.fx = event.x
-                d.fy = event.y
-             }
-             function dragEnded(d) {
-                 simulation.alphaTarget(0)
-                 d.fx = null
-                 d.fy = null
-             }
-
-
-
-
+    
+  
+    this.d3init()
         
     },
     methods: {
@@ -277,6 +76,228 @@ export default {
           .then(response => {
             this.destinationAirports = response.data
           })
+      },
+
+      d3init(start = -1, end = -1) {
+        this.deleteSvgs()
+        console.log(start)
+        console.log(end)
+        if (start == -1 && end == -1) {
+          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/nodes'
+        } else if (end == -1) {
+          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/prim/' + start
+          console.log("prim here")
+        } else {
+          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/dijkstra/' + start + '/' + end
+          //this.nodesUrl='https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'
+        }
+        console.log(this.nodesUrl)
+        
+      console.log("Chart Loaded");
+        
+        var positioning = 'map'
+        var width = 1600
+        var height = 800
+       
+
+         var projection = d3.geoMercator()
+             .scale(210)
+             .center([0,20])
+             .translate([width / 2, height / 2])
+              
+        var path = d3.geoPath().projection(projection)
+        
+        //var graphJson = d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147')
+        var graphJson = d3.json(this.nodesUrl)
+        //var graphJson = d3.json('http://127.0.0.1:5000')
+        //var graphJson = d3.json('http://127.0.0.1:5000/nodes')
+        var linkForce = d3.forceLink()
+            .distance(1)
+        var simulation = d3.forceSimulation(graphJson.nodes)
+            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            //.force("link", d3.forceLink(graphJson.links))
+            .force('charge', d3.forceManyBody().strength(-20))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .stop()
+        var drag = d3.drag()
+            .on('start', dragStarted)
+            .on('drag', dragged)
+           .on('end', dragEnded)
+
+      var files = ["1",
+       "2"];
+           var promises = [];
+
+           files.forEach(function (url) {
+               //promises.push(d3.json('https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'))
+               //promises.push(d3.json(this.nodesUrl))
+               promises.push(graphJson)
+               //promises.push(d3.json('http://127.0.0.1:5000/nodes'))
+               //promises.push(d3.json("/graph.json"))
+               //promises.push(d3.json("https://raw.githubusercontent.com/Ivanovich0705/algorith_complex_datasets/main/continental-us.json"));
+               promises.push(d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"))
+           });
+
+           Promise.all(promises).then(function(values) {
+             console.log(values);
+             initialize(values)
+           });
+
+           // d3.queue()
+           //  .defer(d3.json, 'graph.json')
+           //  .defer(d3.json, 'continental-us.json')
+           //  .awaitAll(initialize)
+
+       function initialize(results) {
+            console.log("initialize")
+         var graph = results[0]
+         var features = results[1].features
+         console.log(graph)
+         simulation.nodes(graph.nodes)
+
+         
+
+         simulation.force('link').links(graph.links)
+         var svg = d3.select('body')
+           .append('svg')
+           .attr('width', width)
+           .attr('height', height)
+           .style("fill", "#DDDDDD")
+           .style("border", "1px solid white")
+           .style("border-radius", "10px")
+           .style("box-shadow", "0 6px 30px rgba(0, 0, 0, 0.356), 0 0 6px rgba(0, 0, 0, 0.05)")
+           .style("display", "block")
+           .style("margin", "auto");
+
+                
+         var map = svg.append('g')
+             .attr('class', 'map')
+             .selectAll('path')
+             .data(features)
+             .enter().append('path')
+           .attr('d', path)
+             
+         var links = svg.append('g')
+             .attr('class', 'links')
+             .selectAll('line')
+             .data(graph.links)
+             .enter().append('line')
+             .attr('stroke-width', 1)
+             .attr("stroke", "grey")//Line Color
+           .attr("opacity", "0.25")//Line Color
+             
+         var nodes = svg.append('g')
+             .attr('class', 'nodes')
+             .selectAll('circle')
+             .data(graph.nodes)
+             .enter().append('circle')
+             .attr("stroke", function (d) {
+               // 3 1 2 4
+               if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
+                     return "#476930";//Latin America
+               }
+               if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
+                     return "#0583d2";//North America
+                 }
+               if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
+                     return "#FFFCEB";//Europe
+               }
+               if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
+                     return "#D0C7C2";//Africa
+               }
+               if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
+                     return "#2D7D7E";//Oceania
+               }
+               return "#AD2E45";//Asia
+
+             })//Cirlce Border Color
+             .attr("fill", function (d) {
+               // 3 1 2 4
+               if ( -25.664063 >= d.lon && d.lon >= -101.250000 && -59.175928 <= d.lat && d.lat <= 18.479609) {
+                     return "#86B049";//Latin America
+               }
+               if ( -27.949219 >= d.lon && d.lon >= -170.683594 && 8.581021 <= d.lat && d.lat <= 77.692870) {
+                     return "#16558f";//North America
+                 }
+               if ( 49.746094 >= d.lon && d.lon >= -22.324219 && 35.0299968 <= d.lat && d.lat <= 72.816074) {
+                     return "#F9CF33";//Europe
+               }
+               if ( 54.492188 >= d.lon && d.lon >= -32.519531 && -35.603719 <= d.lat && d.lat <= 35.603719) {
+                     return "#896B60";//Africa
+               }
+               if ( 195.644531 >= d.lon && d.lon >= 105.820313 && -48.224673 <= d.lat && d.lat <= -4.915833) {
+                     return "#7ECCCC";//Oceania
+               }
+               return "#EFE5E3";//Asia
+
+             })//Circle Fill Color235
+             .attr("stroke-width", "2")
+             .attr("opacity", "0.9")//Line Color
+             .attr('r', 5)
+             .call(drag)
+
+         nodes.append('title')
+           .text(function (d) { return d.faa })
+         fixed(true)
+            d3.select('#toggle').on('click', toggle)
+            function fixed(immediate) {
+                graph.nodes.forEach(function (d) {
+                    var pos = projection([d.lon, d.lat])
+                    d.x = pos[0]
+                    d.y = pos[1]
+                })
+                var t = d3.transition()
+                    .duration(immediate ? 0 : 600)
+                    .ease(d3.easeElastic.period(0.5))
+                update(links.transition(t), nodes.transition(t))
+            }
+            function ticked() {
+                update(links, nodes)
+            }
+           function update(links, nodes) {
+                links
+                    .attr('x1', function (d) { return d.source.x })
+                    .attr('y1', function (d) { return d.source.y })
+                    .attr('x2', function (d) { return d.target.x })
+                    .attr('y2', function (d) { return d.target.y })
+                nodes
+                    .attr('cx', function (d) { return d.x })
+                    .attr('cy', function (d) { return d.y })
+           }
+            function toggle() {
+                if (positioning === 'map') {
+                    positioning = 'sim'
+                    map.attr('opacity', 0.25)
+                    simulation.on('tick', ticked).alpha(1).restart()
+                } else {
+                    positioning = 'map'
+                    map.attr('opacity', 1)
+                    simulation.on('tick', null).stop()
+                    fixed()
+                }
+            }
+       }
+        function dragStarted(d) {
+           simulation.alphaTarget(0.3).restart()
+            d.fx = d.x
+            d.fy = d.y
+        }
+       function dragged(event, d) {
+           if (positioning === 'map') { return }
+           d.fx = event.x
+           d.fy = event.y
+        }
+        function dragEnded(d) {
+            simulation.alphaTarget(0)
+            d.fx = null
+            d.fy = null
+        }
+
+
+      },
+
+      deleteSvgs() {
+        d3.selectAll("svg").remove();
       }
     }
 }

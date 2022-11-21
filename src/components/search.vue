@@ -1,220 +1,226 @@
 <template>
-    <Card class="inputs mb-3 card">
-        <template #header>
-            <h1>Shorter Flight Finder</h1>
-        </template>
+    <header>
+        <Card class="inputs mb-3 card">
+            <template #header>
+                <h1>Shorter Flight Finder</h1>
+            </template>
 
-        <template #subtitle>
-            <Button id="toggle" class="google toogle-button p-0" aria-label="Google">
-                <i class="pi pi-unlock px-2"></i>
-                <span class="px-3">Toggle Map</span>
-            </Button>
-        </template>
+            <template #subtitle>
+                <Button id="toggle" class="google toogle-button p-0" aria-label="Google">
+                    <i class="pi pi-unlock px-2"></i>
+                    <span class="px-3">Toggle Map</span>
+                </Button>
+            </template>
 
-        <template #content>
-            <div class="grid">
-                <Card class="card col-7 ml-auto mr-auto">
-                    <template #header>
-                        <h2>Dijkstra or UCS for two Airports</h2>
-                    </template>
-                    <template #content>
-                        <div class="grid">
-                            <div class="col-5">
-                                <div class="grid mt-2">
-                                    <div class="col-8 flex">
-                                        <i class="order-origin ml-1 "></i>
-                                        <label class="text-xl ml-6"> Origin Country </label>
+            <template #content>
+                <div class="grid">
+                    <Card class="card col-7 ml-auto mr-auto">
+                        <template #header>
+                            <h2>Dijkstra or UCS for two Airports</h2>
+                        </template>
+                        <template #content>
+                            <div class="grid">
+                                <div class="col-5">
+                                    <div class="grid mt-2">
+                                        <div class="col-8 flex">
+                                            <i class="order-origin ml-1 "></i>
+                                            <label class="text-xl ml-6"> Origin Country </label>
+                                        </div>
+                                        <div class="col-4 flex justify-content-start">
+                
+                                            <pv-dropdown v-model="orderOrigin" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
+                                                <template #value="slotProps">
+
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.country}}</span>
+                                                    </div>
+
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
+
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.country}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
                                     </div>
-                                    <div class="col-4 flex justify-content-start">
-            
-                                        <pv-dropdown v-model="orderOrigin" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="validateOrigin()" :showClear="true">
-                                            <template #value="slotProps">
+                
+                                    <div class="grid mt-3">
+                                        <div class="col-8 flex">
+                                            <i class="order-destination ml-1"></i>
+                                            <label class="text-xl ml-6">Destination Country </label>
+                                        </div>
+                                        <div class="col-4 flex justify-content-start">
+                                            <pv-dropdown v-model="orderDestination" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
+                                                <template #value="slotProps">
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.country}}</span>
+                                                    </div>
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
 
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.country}}</span>
-                                                </div>
-
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.country}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
-                                    </div>
-                                </div>
-            
-                                <div class="grid mt-3">
-                                    <div class="col-8 flex">
-                                        <i class="order-destination ml-1"></i>
-                                        <label class="text-xl ml-6">Destination Country </label>
-                                    </div>
-                                    <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="orderDestination" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadDestinationAirports()" :showClear="true">
-                                            <template #value="slotProps">
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.country}}</span>
-                                                </div>
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.country}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
-                                    </div>
-                                </div>
-                            </div>
-            
-                            <div class="col-5 ml-8">
-                                <div class="grid mt-2">
-                                    <div class="col-8 flex ">
-                                        <i class="order-origin pd-1 "></i>
-                                        <label class="text-xl ml-3">Origin Airport </label>
-                                    </div>
-
-                                    <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" v-on:change="validateOrigin()" :showClear="true">
-                                            <template #value="slotProps">
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.airport}}</span>
-                                                </div>
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.airport}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.country}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
                                     </div>
                                 </div>
+                
+                                <div class="col-5 ml-8">
+                                    <div class="grid mt-2">
+                                        <div class="col-8 flex ">
+                                            <i class="order-origin pd-1 "></i>
+                                            <label class="text-xl ml-3">Origin Airport </label>
+                                        </div>
 
-                                <div class="grid mt-3">
-                                    <div class="col-8 flex ">
-                                        <i class="order-destination ml-1"></i>
-                                        <label class="text-xl ml-6">Destination Airport </label>
+                                        <div class="col-4 flex justify-content-start">
+                                            <pv-dropdown v-model="originAirportSelected" :options="originAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" v-on:change="validateOrigin()" :showClear="true">
+                                                <template #value="slotProps">
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.airport}}</span>
+                                                    </div>
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.airport}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
                                     </div>
 
-                                    <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
-                                            <template #value="slotProps">
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.airport}}</span>
-                                                </div>
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.airport}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                                    <div class="grid mt-3">
+                                        <div class="col-8 flex ">
+                                            <i class="order-destination ml-1"></i>
+                                            <label class="text-xl ml-6">Destination Airport </label>
+                                        </div>
 
-                    <template #footer>
-                        <Button type="button" label="Search by Dijkstra" icon="pi pi-search" :loading="loadingDijkstra[0]" @click="loadDijkstra(0)" />
-                    </template>
-                </Card>
-
-                <Card class="card col-4 ml-auto mr-auto">
-                    <template #header>
-                        <h2>Kruskal for an Airport</h2>
-                    </template>
-                    <template #content>
-                        <div class="grid">
-                            <div class="col-10">
-                                <div class="grid mt-2">
-                                    <div class="col-7 flex">
-                                        <i class="order-origin ml-0"></i>
-                                        <label class="text-xl ml-1">Origin Country</label>
-                                    </div>
-                                    <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="kruskalStartCountry" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadKruskalAirports()" :showClear="true">
-                                            <template #value="slotProps">
-
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.country}}</span>
-                                                </div>
-
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.country}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
-                                    </div>
-                                </div>
-            
-                                <div class="grid mt-3">
-                                    <div class="col-8 flex">
-                                        <i class="order-origin ml-1"></i>
-                                        <label class="text-xl ml-0">Origin Airport </label>
-                                    </div>
-                                    <div class="col-4 flex justify-content-start">
-                                        <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="country" :filter="true" placeholder="Select an Airport" :showClear="true">
-                                            <template #value="slotProps">
-                                                <div class="country-item country-item-value" v-if="slotProps.value">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
-                                                    <span>{{slotProps.value.airport}}</span>
-                                                </div>
-                                                <span v-else>
-                                                    {{slotProps.placeholder}}
-                                                </span>
-                                            </template>
-
-                                            <template #option="slotProps">
-                                                <div class="country-item">
-                                                    <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
-                                                    <span>{{slotProps.option.airport}}</span>
-                                                </div>
-                                            </template>
-                                        </pv-dropdown>
+                                        <div class="col-4 flex justify-content-start">
+                                            <pv-dropdown v-model="destinationAirportSelected" :options="destinationAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" :showClear="true">
+                                                <template #value="slotProps">
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.airport}}</span>
+                                                    </div>
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.airport}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
-                    <template #footer>
-                        <Button type="button" label="Search by Kruskal" icon="pi pi-search" :loading="loadingKruskal[0]" @click="loadKruskal(0)" />
-                    </template>
-                </Card>
-            </div>
-        </template>
+                        </template>
 
-  
-    </Card>
+                        <template #footer>
+                            <Button type="button" label="Search by Dijkstra" icon="pi pi-search" :loading="loadingDijkstra[0]"  @click="loadDijkstra(0)"/>
+                        </template>
+                    </Card>
+
+                    <Card class="card col-4 ml-auto mr-auto">
+                        <template #header>
+                            <h2>Prim for an Airport</h2>
+                        </template>
+                        <template #content>
+                            <div class="grid">
+                                <div class="col-10">
+                                    <div class="grid mt-2">
+                                        <div class="col-7 flex">
+                                            <i class="order-origin ml-0"></i>
+                                            <label class="text-xl ml-1">Origin Country</label>
+                                        </div>
+                                        <div class="col-4 flex justify-content-start">
+                                            <pv-dropdown v-model="kruskalStartCountry" :options="countries" optionLabel="country" :filter="true" placeholder="Select a Country" v-on:change="loadKruskalAirports()" :showClear="true">
+                                                <template #value="slotProps">
+
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.country}}</span>
+                                                    </div>
+
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
+
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.country}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
+                                    </div>
+                
+                                    <div class="grid mt-3">
+                                        <div class="col-8 flex">
+                                            <i class="order-origin ml-1"></i>
+                                            <label class="text-xl ml-0">Origin Airport </label>
+                                        </div>
+                                        <div class="col-4 flex justify-content-start">
+                                            <pv-dropdown v-model="kruskalStartAirport" :options="kruskalAirports" optionLabel="airport" :filter="true" placeholder="Select an Airport" :showClear="true">
+                                                <template #value="slotProps">
+                                                    <div class="country-item country-item-value" v-if="slotProps.value">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.value.code"/>
+                                                        <span>{{slotProps.value.airport}}</span>
+                                                    </div>
+                                                    <span v-else>
+                                                        {{slotProps.placeholder}}
+                                                    </span>
+                                                </template>
+
+                                                <template #option="slotProps">
+                                                    <div class="country-item">
+                                                        <img :src="'https://countryflagsapi.com/png/'+slotProps.option.code"/>
+                                                        <span>{{slotProps.option.airport}}</span>
+                                                    </div>
+                                                </template>
+                                            </pv-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template #footer>
+                            <Button type="button" label="Search by Prim" icon="pi pi-search" :loading="loadingKruskal[0]" @click="loadKruskal(0)" />
+                        </template>
+                    </Card>
+                </div>
+            </template>
+        </Card>
+    </header>
+
+
+    <main>
+        <chart ref="chartComponent"/>
+    </main>
+
 </template>
 
 <script scoped>
@@ -222,7 +228,13 @@ import { UserApiService } from "../services/user-api-service";
 import { isGloballyWhitelisted, stringifyStyle } from '@vue/shared';
 import * as d3 from 'd3'
 import { isTemplateNode } from "@vue/compiler-core";
+import chart from "./chart.vue";
+
 export default {
+    name:"Search",
+    components: {
+        chart
+    },
     data() {
         return {
             loadingKruskal: [false, false, false],
@@ -247,17 +259,27 @@ export default {
         this.countryApiService.getCountries().then((response) => {
             this.countries = response.data;
             console.log("🚀 ~ file: search.vue ~ line 152 ~ this.countryApiService.getCountries ~ this.countries = response.data;", this.countries = response.data);
-            console.log(this.recent_orders);
         });
     },
+    mounted() {
+        //this.$refs.chartComponent.d3init()
+    },
     methods: {
+        doDijkstra() {
+            console.log(this.originAirportSelected.airportId)
+            console.log(this.destinationAirportSelected.airportId)
+            //call function from search component
+        },
         loadDijkstra(index) {
             this.loadingDijkstra[index] = true;
             setTimeout(() => this.loadingDijkstra[index] = false, 1000);
+            this.doDijkstra();
+            this.$refs.chartComponent.d3init(this.originAirportSelected.airportId, this.destinationAirportSelected.airportId)
         },
         loadKruskal(index) {
             this.loadingKruskal[index] = true;
             setTimeout(() => this.loadingKruskal[index] = false, 1000);
+            this.$refs.chartComponent.d3init(this.kruskalStartAirport.airportId)
         },
         validateOrigin: function () {
             if (this.orderOrigin == "") {
