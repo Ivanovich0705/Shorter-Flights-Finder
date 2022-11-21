@@ -208,7 +208,7 @@
                             </div>
                         </template>
                         <template #footer>
-                            <Button type="button" label="Search by Kruskal" icon="pi pi-search" :loading="loadingKruskal[0]" @click="loadKruskal(0)" />
+                            <Button type="button" label="Search by Prim" icon="pi pi-search" :loading="loadingKruskal[0]" @click="loadKruskal(0)" />
                         </template>
                     </Card>
                 </div>
