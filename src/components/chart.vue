@@ -84,11 +84,14 @@ export default {
         console.log(end)
         if (start == -1 && end == -1) {
           this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/nodes'
+          //this.nodesUrl = 'http://127.0.0.1:5000/nodes'
         } else if (end == -1) {
           this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/prim/' + start
+          //this.nodesUrl = 'http://127.0.0.1:5000/prim/' + start
           console.log("prim here")
         } else {
           this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/dijkstra/' + start + '/' + end
+          //this.nodesUrl = 'http://127.0.0.1:5000/dijkstra/' + start + '/' + end
           //this.nodesUrl='https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'
         }
         console.log(this.nodesUrl)
@@ -114,7 +117,7 @@ export default {
         var linkForce = d3.forceLink()
             .distance(1)
         var simulation = d3.forceSimulation(graphJson.nodes)
-            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            .force("link", d3.forceLink().id(function(d) { return d.new_id; }))
             //.force("link", d3.forceLink(graphJson.links))
             .force('charge', d3.forceManyBody().strength(-20))
             .force('center', d3.forceCenter(width / 2, height / 2))
