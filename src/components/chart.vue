@@ -83,15 +83,15 @@ export default {
         console.log(start)
         console.log(end)
         if (start == -1 && end == -1) {
-          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/nodes'
-          //this.nodesUrl = 'http://127.0.0.1:5000/nodes'
+          //this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/nodes'
+          this.nodesUrl = 'http://127.0.0.1:5000/nodes'
         } else if (end == -1) {
-          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/prim/' + start
-          //this.nodesUrl = 'http://127.0.0.1:5000/prim/' + start
+          //this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/prim/' + start
+          this.nodesUrl = 'http://127.0.0.1:5000/prim/' + start
           console.log("prim here")
         } else {
-          this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/dijkstra/' + start + '/' + end
-          //this.nodesUrl = 'http://127.0.0.1:5000/dijkstra/' + start + '/' + end
+          //this.nodesUrl = 'https://acomplex-tf-api.herokuapp.com/dijkstra/' + start + '/' + end
+          this.nodesUrl = 'http://127.0.0.1:5000/dijkstra/' + start + '/' + end
           //this.nodesUrl='https://acomplex-tf-api.herokuapp.com/dijkstra/1146/1147'
         }
         console.log(this.nodesUrl)
